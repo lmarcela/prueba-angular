@@ -38,7 +38,6 @@ export class PaisesService  implements HttpInterceptor {
   }
 
   getCities(country: string): Observable<[]> {
-
     const url: string = `${ this.baseUrl }/cities`
     return this.http.post<[]>( url , {country:country});
   }

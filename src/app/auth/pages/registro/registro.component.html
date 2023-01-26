@@ -18,12 +18,28 @@
                             <input type="number" class="form-control" formControlName="edad" id="floatingEdad">
                             <label for="floatingEdad">Edad</label>
                         </div>
-                        <div class="form-floating">
+                        <button class="btn btn-light" type="button" disabled *ngIf="!paisesError && paises.length===0">
+                            <span class="spinner-grow spinner-grow-sm text-primary" role="status"
+                                aria-hidden="true"></span>
+                            Cargando países...
+                        </button>
+                        <div *ngIf="paisesError" class="text-danger">
+                            Error cargando paises. Intenta mas tarde.
+                        </div>
+                        <div class="form-floating" *ngIf="paises.length>0">
                             <select class="form-control" formControlName="pais" id="floatingPais">
                                 <option value=""> -- Seleccione Pais -- </option>
                                 <option *ngFor="let pais of paises" [value]="pais | lowercase"> {{ pais }} </option>
                             </select>
                             <label for="floatingPais">Pais</label>
+                        </div>
+                        <button class="btn btn-light" type="button" disabled *ngIf="!ciudadesError && cargando && ciudades.length===0">
+                            <span class="spinner-grow spinner-grow-sm text-primary" role="status"
+                                aria-hidden="true"></span>
+                            Cargando ciudades...
+                        </button>
+                        <div *ngIf="ciudadesError" class="text-danger">
+                            Error cargando ciudades. Intenta mas tarde.
                         </div>
                         <div class="form-floating" *ngIf="ciudades.length>0">
                             <select class="form-control" formControlName="ciudad" id="floatingCiudad">
@@ -45,13 +61,13 @@
                             <div class="form-floating">
                                 <select class="form-control" formControlName="parentesco" id="floatingParentesco">
                                     <option value=""> -- Seleccione Parentesco -- </option>
-                                    <option *ngFor="let parentesco of parentescos" [value]="parentesco | lowercase" 
-                                    > {{ parentesco }} </option>
+                                    <option *ngFor="let parentesco of parentescos" [value]="parentesco | lowercase"> {{
+                                        parentesco }} </option>
                                 </select>
                                 <!-- *ngIf="personasArr.value.not.contains(parentesco)" -->
                                 <label for="floatingParentesco">Parentesco</label>
                             </div>
-                            
+
                             <div class="form-floating">
                                 <input type="number" class="form-control" formControlName="edad2" id="floatingEdad2">
                                 <label for="floatingEdad2">Edad</label>
@@ -60,8 +76,8 @@
                                 Agregar Persona a cargo
                             </button>
                         </diV>
-                        
-                        <pre> 
+
+                        <pre>
                             <code>
                                {{ personasArr.value.parentesco | json }}
                             </code>
@@ -95,11 +111,11 @@
 
 
     <div>
-    <h2>Form Valid: {{ miFormulario.valid }}</h2>
-<h2>Form Status: {{ miFormulario.status }}</h2>
-<h2>Form Pending: {{ miFormulario.pending }}</h2>
-<h2>Form Pending: {{ miFormulario.value | json }}</h2>
-</div>
+        <h2>Form Valid: {{ miFormulario.valid }}</h2>
+        <h2>Form Status: {{ miFormulario.status }}</h2>
+        <h2>Form Pending: {{ miFormulario.pending }}</h2>
+        <h2>Form Pending: {{ miFormulario.value | json }}</h2>
+    </div>
 </section>
 <!-- <form>
     <div class="mb-3">
