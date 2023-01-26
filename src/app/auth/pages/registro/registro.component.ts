@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -7,7 +6,13 @@ import {
   FormControl,
   FormArray,
 } from '@angular/forms';
-import { catchError, distinctUntilChanged, map, of, Subject, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { PaisesService } from 'src/app/services/paises.service';
 
 @Component({
@@ -28,24 +33,13 @@ export class RegistroComponent {
 
     personas: this.fb.array([]),
     nuevaPersona: this.fb.group({
-      nombreCompleto: [
-        '',
-        // [Validators.required]
-      ],
-      parentesco: [
-        '',
-        // [Validators.required]
-      ],
+      nombreCompleto: ['',],
+      parentesco: ['',],
       edad2: [{ value: '', disabled: true }, [Validators.required]],
     }),
   });
   get personasArr() {
     return this.miFormulario.get('personas') as FormArray;
-  }
-  public showElement(): boolean {
-    return !this.personasArr.value.some(
-      (x: { parentesco: string }) => x.parentesco === 'papá'
-    );
   }
 
   // Llenar selectores
@@ -53,12 +47,8 @@ export class RegistroComponent {
   paises: [] = [];
   ciudades: [] = [];
   parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
-  prueba = this.personasArr.value;
 
   constructor(private fb: FormBuilder, private paisesService: PaisesService) {}
-  ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
-}
   ngOnInit(): void {
     this.miFormulario.reset({
       nombre: '',
@@ -66,6 +56,10 @@ export class RegistroComponent {
       edad: '35',
       pais: '',
       ciudad: '',
+      nuevaPersona: {
+        parentesco: '',
+        edad2: '18',
+      },
     });
     // this.miFormulario.get('edad')?.disable();
 
@@ -78,15 +72,15 @@ export class RegistroComponent {
           return of();
         })
       )
-      .subscribe(
-        (paises) =>
-          {return this.paises = paises.map((data: { country: any }) => data.country)}
-      );
-      
+      .subscribe((paises) => {
+        return (this.paises = paises.map(
+          (data: { country: any }) => data.country
+        ));
+      });
+
     this.miFormulario
       .get('pais')
-      ?.valueChanges
-      .pipe(
+      ?.valueChanges.pipe(
         tap((_) => {
           this.ciudadesError = false;
           this.miFormulario.get('ciudad')?.reset('');
@@ -96,21 +90,34 @@ export class RegistroComponent {
         switchMap((pais) => {
           return this.paisesService.getCities(pais).pipe(
             catchError(() => {
-          this.cargando = false;
-          this.ciudades = [];
-          this.ciudadesError = true;
-          return of();
-        })
-          )
+              this.cargando = false;
+              this.ciudades = [];
+              this.ciudadesError = true;
+              return of();
+            })
+          );
         }),
-        map((data: any) => data.data),
+        map((data: any) => data.data)
       )
       .subscribe((ciudades) => {
         this.cargando = false;
         this.ciudades = ciudades;
-      })
+      });
   }
 
+  validPersonas() {
+    const nombreCompleto = this.miFormulario.get('nuevaPersona')?.get('nombreCompleto')?.value;
+    const parentesco = this.miFormulario
+      .get('nuevaPersona')
+      ?.get('parentesco')?.value;
+    if (nombreCompleto == null || nombreCompleto.trim() == '') {
+      return false;
+    }
+    if (parentesco == null || parentesco.trim() == '') {
+      return false;
+    }
+    return true;
+  }
   agregarPersona() {
     if (this.miFormulario.get('nuevaPersona')?.invalid) {
       return;
@@ -131,8 +138,10 @@ export class RegistroComponent {
     );
     // console.log('personasArr', JSON.stringify(this.personasArr.value));
     this.validateParentescos();
-
-    this.miFormulario.get('nuevaPersona')?.reset();
+    this.miFormulario.get('nuevaPersona')?.reset({
+      parentesco: '',
+      edad2: '18',
+    });
   }
   validateParentescos() {
     this.validateParentesco('papá');
@@ -140,22 +149,45 @@ export class RegistroComponent {
     this.validateParentesco('esposo(a)');
   }
   borrarPersona(i: number) {
-    // if(this.personasArr[i].parentesco ==='papá'){
-    //   console.log("first")
-    // }
-    // TODO: ADD PARENTESCO
-    // console.log(this.personasArr.value[i].parentesco)
+    const parentesco = this.personasArr.value[i].parentesco;
+    if (
+      parentesco === 'papá' ||
+      parentesco === 'mamá' ||
+      parentesco === 'esposo(a)'
+    ) {
+      this.parentescos.push(
+        parentesco[0].toUpperCase() + parentesco.substring(1)
+      );
+    }
     this.personasArr.removeAt(i);
   }
 
   submitFormulario() {
     this.miFormulario.markAllAsTouched();
-    // console.log(this.miFormulario.value);
+    this.miFormulario.get('nuevaPersona')?.disable();
+    console.log(this.miFormulario.value);
+    const pais = this.miFormulario.get('pais')?.value;
+    const ciudad = this.miFormulario.get('ciudad')?.value;
     console.log('nombre:', this.miFormulario.get('nombre')?.value);
     console.log('apellido:', this.miFormulario.get('apellido')?.value);
     console.log('edad:', this.miFormulario.get('edad')?.value || 18);
-    console.log('pais:', this.miFormulario.get('pais')?.value);
-    console.log('ciudad:', this.miFormulario.get('ciudad')?.value);
+    console.log('pais:', pais);
+    console.log('ciudad:', ciudad);
+    console.log('personas a cargo:', this.miFormulario.get('personas')?.value);
+
+    this.miFormulario.get('nuevaPersona')?.enable();
+
+    this.miFormulario.reset({
+      nombre: '',
+      apellido: '',
+      edad: '35',
+      pais,
+      ciudad,
+      nuevaPersona: {
+        parentesco: '',
+        edad2: '18',
+      },
+    });
   }
 
   validateParentesco(parentesco: string) {
