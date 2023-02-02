@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { AuthService } from '../auth/services/auth.service';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidarTokenGuard implements CanActivate {
 
-  constructor( private authService: AuthService,
-    private router: Router ){
+  constructor( private router: Router ){
     }
-
-  canActivate(): Observable<boolean> | boolean {
-    return this.authService.validarToken()
-            .pipe(
-              tap( valid => {
-                if ( !valid ) {
-                  console.log("invalid token")
-                  this.router.navigateByUrl('/');
-                }
-              })
-            );
-  }
+  canActivate(route: ActivatedRouteSnapshot) {
+    if ( route.queryParams['token'] ==='123' ) {
+      return true;
+    }
+    console.log("invalid token")
+    this.router.navigateByUrl('/');
+    return false;
+}
   
 }
