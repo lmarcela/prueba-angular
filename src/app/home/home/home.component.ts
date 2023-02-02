@@ -4,14 +4,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  constructor(private router: Router){
-  }
-  goToRegisterForm(){
-    this.router.navigate(
-      ['/auth'],
-      { queryParams: { token: '123' } })
+  constructor(private router: Router) {}
+  goToRegisterForm() {
+    this.router.navigate(['/auth'], { queryParams: { token: '123' } });
   }
 }

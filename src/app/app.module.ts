@@ -7,22 +7,15 @@ import { HomeComponent } from './home/home/home.component';
 import { PaisesInterceptor } from './interceptors/paises.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
+  declarations: [AppComponent, HomeComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: PaisesInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

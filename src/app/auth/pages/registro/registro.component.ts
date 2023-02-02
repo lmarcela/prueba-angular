@@ -6,13 +6,7 @@ import {
   FormControl,
   FormArray,
 } from '@angular/forms';
-import {
-  catchError,
-  map,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { PaisesService } from 'src/app/services/paises.service';
 
 @Component({
@@ -33,8 +27,8 @@ export class RegistroComponent implements OnInit {
 
     personas: this.fb.array([]),
     nuevaPersona: this.fb.group({
-      nombreCompleto: ['',],
-      parentesco: ['',],
+      nombreCompleto: [''],
+      parentesco: [''],
       edad2: [{ value: '', disabled: true }, [Validators.required]],
     }),
   });
@@ -104,7 +98,9 @@ export class RegistroComponent implements OnInit {
   }
 
   validPersonas() {
-    const nombreCompleto = this.miFormulario.get('nuevaPersona')?.get('nombreCompleto')?.value;
+    const nombreCompleto = this.miFormulario
+      .get('nuevaPersona')
+      ?.get('nombreCompleto')?.value;
     const parentesco = this.miFormulario
       .get('nuevaPersona')
       ?.get('parentesco')?.value;
