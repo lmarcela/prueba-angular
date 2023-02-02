@@ -10,23 +10,26 @@ export interface ResponseApi {
 })
 export class PaisesService {
   private baseUrl = 'https://countriesnow.space/api/v0.1/countries';
-  paisesError: boolean = false;
 
   constructor(private http: HttpClient) {}
 
-  getPaises(): Observable<[]> {
+  getPaises(): Observable<[] | string> {
     const url = `${this.baseUrl}/`;
     return this.http.get<ResponseApi>(url).pipe(
       map((paises) => paises.data),
       catchError(() => {
-        this.paisesError = true;
-        return of();
+        return of("error");
       })
     );
   }
 
-  getCities(country: string): Observable<[]> {
+  getCities(country: string): Observable<[] | string> {
     const url = `${this.baseUrl}/cities`;
-    return this.http.post<[]>(url, { country: country });
+    return this.http.post<ResponseApi>(url, { country: country }).pipe(
+      map((data) => data.data),
+      catchError(() => {
+        return of("error");
+      })
+    );
   }
 }

@@ -6,7 +6,7 @@ import {
   FormControl,
   FormArray,
 } from '@angular/forms';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { PaisesService } from 'src/app/services/paises.service';
 
 interface PaisesResponse {
@@ -19,8 +19,12 @@ interface PaisesResponse {
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
-  paisesError = this.paisesService.paisesError;
+  paisesError = false;
   ciudadesError = false;
+  cargando = false;
+  paises: string[] = [];
+  ciudades: [] = [];
+  parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
 
   miFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
@@ -36,14 +40,10 @@ export class RegistroComponent implements OnInit {
       edad2: [{ value: '', disabled: true }, [Validators.required]],
     }),
   });
+
   get personasArr() {
     return this.miFormulario.get('personas') as FormArray;
   }
-
-  cargando = false;
-  paises: string[] = [];
-  ciudades: [] = [];
-  parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
 
   constructor(private fb: FormBuilder, private paisesService: PaisesService) {}
   ngOnInit(): void {
@@ -59,37 +59,48 @@ export class RegistroComponent implements OnInit {
       },
     });
 
-    this.paisesService.getPaises().subscribe((response) => {
-      return (this.paises = response.map(
-        (data: PaisesResponse) => data.country
-      ));
-    });
-
+    this.loadPaises();
+    this.loadCiudades();
+  }
+  loadPaises() {
+    this.paisesService
+      .getPaises()
+      .subscribe((response: PaisesResponse[] | string) => {
+        if (typeof response === 'string') {
+          return (this.paisesError = true);
+        }
+        return (this.paises = response.map(
+          (pais: PaisesResponse) => pais.country
+        ));
+      });
+  }
+  loadCiudades() {
     this.miFormulario
       .get('pais')
       ?.valueChanges.pipe(
         tap((_) => {
-          this.ciudadesError = false;
-          this.miFormulario.get('ciudad')?.reset('');
-          this.cargando = true;
-          this.ciudades = [];
+          this.prepararCiudades();
         }),
         switchMap((pais) => {
-          return this.paisesService.getCities(pais).pipe(
-            catchError(() => {
-              this.cargando = false;
-              this.ciudades = [];
-              this.ciudadesError = true;
-              return of();
-            })
-          );
-        }),
-        map((data: any) => data.data)
+          return this.paisesService.getCities(pais);
+        })
       )
-      .subscribe((ciudades) => {
+      .subscribe((response: [] | string) => {
+        if (typeof response === 'string') {
+          this.cargando = false;
+          this.ciudades = [];
+          this.ciudadesError = true;
+          return;
+        }
         this.cargando = false;
-        this.ciudades = ciudades;
+        this.ciudades = response;
       });
+  }
+  prepararCiudades() {
+    this.ciudadesError = false;
+    this.miFormulario.get('ciudad')?.reset('');
+    this.cargando = true;
+    this.ciudades = [];
   }
 
   validPersonas() {
