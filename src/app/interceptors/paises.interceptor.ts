@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
-  HttpEvent,
   HttpInterceptor,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable()
 export class PaisesInterceptor implements HttpInterceptor {
-
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  intercept(req: HttpRequest<any>, next: HttpHandler){
     console.log("sending token")
     const token = "token";
 
