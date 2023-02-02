@@ -11,11 +11,9 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable()
 export class PaisesInterceptor implements HttpInterceptor {
 
-  constructor() {}
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     console.log("sending token")
-    const token: string = "token";
+    const token = "token";
 
     let request = req;
 

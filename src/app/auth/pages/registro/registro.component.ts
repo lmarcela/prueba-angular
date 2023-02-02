@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -20,9 +20,9 @@ import { PaisesService } from 'src/app/services/paises.service';
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],
 })
-export class RegistroComponent {
-  paisesError: boolean = false;
-  ciudadesError: boolean = false;
+export class RegistroComponent implements OnInit {
+  paisesError = false;
+  ciudadesError = false;
 
   miFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
