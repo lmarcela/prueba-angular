@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home/home.component';
-import { PaisesService } from './services/paises.service';
+import { PaisesInterceptor } from './interceptors/paises.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { PaisesService } from './services/paises.service';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: PaisesService,
+      useClass: PaisesInterceptor,
       multi: true
     }
   ],
