@@ -42,7 +42,6 @@ export class RegistroComponent implements OnInit {
     return this.miFormulario.get('personas') as FormArray;
   }
 
-  // Llenar selectores
   cargando = false;
   paises: [] = [];
   ciudades: [] = [];
@@ -61,7 +60,6 @@ export class RegistroComponent implements OnInit {
         edad2: '18',
       },
     });
-    // this.miFormulario.get('edad')?.disable();
 
     this.paisesService
       .getPaises()
@@ -136,7 +134,6 @@ export class RegistroComponent implements OnInit {
         Validators.required
       )
     );
-    // console.log('personasArr', JSON.stringify(this.personasArr.value));
     this.validateParentescos();
     this.miFormulario.get('nuevaPersona')?.reset({
       parentesco: '',
