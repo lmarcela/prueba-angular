@@ -9,13 +9,17 @@ import {
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { PaisesService } from 'src/app/services/paises.service';
 
+interface PaisesResponse {
+  country: string;
+}
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
-  paisesError = false;
+  paisesError = this.paisesService.paisesError;
   ciudadesError = false;
 
   miFormulario: FormGroup = this.fb.group({
@@ -37,7 +41,7 @@ export class RegistroComponent implements OnInit {
   }
 
   cargando = false;
-  paises: [] = [];
+  paises: string[] = [];
   ciudades: [] = [];
   parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
 
@@ -55,20 +59,11 @@ export class RegistroComponent implements OnInit {
       },
     });
 
-    this.paisesService
-      .getPaises()
-      .pipe(
-        map((data: any) => data.data),
-        catchError(() => {
-          this.paisesError = true;
-          return of();
-        })
-      )
-      .subscribe((paises) => {
-        return (this.paises = paises.map(
-          (data: { country: any }) => data.country
-        ));
-      });
+    this.paisesService.getPaises().subscribe((response) => {
+      return (this.paises = response.map(
+        (data: PaisesResponse) => data.country
+      ));
+    });
 
     this.miFormulario
       .get('pais')
