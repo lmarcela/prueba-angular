@@ -78,7 +78,7 @@ export class RegistroComponent implements OnInit {
     this.miFormulario
       .get('pais')
       ?.valueChanges.pipe(
-        tap((_) => {
+        tap(() => {
           this.prepararCiudades();
         }),
         switchMap((pais) => {
@@ -163,7 +163,6 @@ export class RegistroComponent implements OnInit {
 
   submitFormulario() {
     this.miFormulario.markAllAsTouched();
-    this.miFormulario.get('nuevaPersona')?.disable();
     console.log(this.miFormulario.value);
     const pais = this.miFormulario.get('pais')?.value;
     const ciudad = this.miFormulario.get('ciudad')?.value;
@@ -174,14 +173,15 @@ export class RegistroComponent implements OnInit {
     console.log('ciudad:', ciudad);
     console.log('personas a cargo:', this.miFormulario.get('personas')?.value);
 
-    this.miFormulario.get('nuevaPersona')?.enable();
-
+    this.personasArr.clear();
+    this.parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
     this.miFormulario.reset({
       nombre: '',
       apellido: '',
       edad: '35',
       pais,
       ciudad,
+      personas: [],
       nuevaPersona: {
         parentesco: '',
         edad2: '18',
