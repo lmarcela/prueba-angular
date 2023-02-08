@@ -29,7 +29,7 @@ export class RegistroComponent implements OnInit {
   miFormulario: FormGroup = this.fb.group({
     nombre: ['', [Validators.required]],
     apellido: ['', [Validators.required]],
-    edad: [{ value: '', disabled: true }, [Validators.required]],
+    edad: [{ value: '35', disabled: true }, [Validators.required]],
     pais: ['', Validators.required],
     ciudad: ['', Validators.required],
 
@@ -37,7 +37,7 @@ export class RegistroComponent implements OnInit {
     nuevaPersona: this.fb.group({
       nombreCompleto: [''],
       parentesco: [''],
-      edad2: [{ value: '', disabled: true }, [Validators.required]],
+      edad2: [{ value: '18', disabled: true }, [Validators.required]],
     }),
   });
 
@@ -47,18 +47,6 @@ export class RegistroComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private paisesService: PaisesService) {}
   ngOnInit(): void {
-    this.miFormulario.reset({
-      nombre: '',
-      apellido: '',
-      edad: '35',
-      pais: '',
-      ciudad: '',
-      nuevaPersona: {
-        parentesco: '',
-        edad2: '18',
-      },
-    });
-
     this.loadPaises();
     this.loadCiudades();
   }
