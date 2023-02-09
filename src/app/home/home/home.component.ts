@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
-  constructor(private router: Router) {}
+  count$: Observable<number>;
+
+  constructor(private router: Router, private store: Store<{ count: number }>) {
+    this.count$ = store.select('count');
+  }
   goToRegisterForm() {
     this.router.navigate(['/auth'], { queryParams: { token: '123' } });
   }

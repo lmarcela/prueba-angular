@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { increment, decrement, reset } from '../counter.actions';
@@ -10,7 +11,7 @@ import { increment, decrement, reset } from '../counter.actions';
 export class CounterComponent {
   count$: Observable<number>;
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private router: Router, private store: Store<{ count: number }>) {
     this.count$ = store.select('count');
   }
 
@@ -24,5 +25,9 @@ export class CounterComponent {
 
   reset() {
     this.store.dispatch(reset());
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
   }
 }
