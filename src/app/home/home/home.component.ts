@@ -11,4 +11,7 @@ export class HomeComponent {
   goToRegisterForm() {
     this.router.navigate(['/auth'], { queryParams: { token: '123' } });
   }
+  goToCounter() {
+    this.router.navigate(['/counter']);
+  }
 }
