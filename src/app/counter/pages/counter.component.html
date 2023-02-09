@@ -1,0 +1,19 @@
+<section>
+    <h1>Counter Page</h1>
+    <p>Current Count: {{ count$ | async }}</p>
+    <button mat-fab matTooltip="Increment" color="accent" aria-label="+1" (click)="increment()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <button mat-fab matTooltip="Decrement" color="primary" aria-label="-1" class="ml" (click)="decrement()">
+        <mat-icon>removes</mat-icon>
+    </button>
+    <button mat-fab matTooltip="Reset" color="basic" aria-label="reset" class="ml" (click)="reset()">
+        <mat-icon>replay</mat-icon>
+    </button>
+    <div>
+        <button mat-fab extended color="basic" class="mt" (click)="goToHome()">
+            <mat-icon>home</mat-icon>
+            Ir a Home
+        </button>
+    </div>
+</section>

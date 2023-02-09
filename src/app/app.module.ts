@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home/home.component';
 import { PaisesInterceptor } from './interceptors/paises.interceptor';
 import { counterReducer } from './counter/counter.reducer';
+import { MaterialModule } from './utils/material.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -19,6 +20,7 @@ import { counterReducer } from './counter/counter.reducer';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
+    MaterialModule
   ],
   providers: [
     {

@@ -1,7 +1,19 @@
-<section class="vw-100">
-    <div class="form-signin w-100 m-auto">
+<section>
+    <!-- <div class="form-signin w-100 m-auto"> -->
         <form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="submitFormulario()">
             <h1 class="text-center h3 mb-3 fw-normal">Formulario de registro</h1>
+            <!-- <Grid container columns={{ xs: 4, md: 12 }}>
+                <Grid item xs={2} />
+              </Grid> -->
+              <mat-grid-list [cols]="breakpoint" rowHeight="100px" (window:resize)="handleSize($event)">
+                <mat-grid-tile>Grid One</mat-grid-tile>
+                <mat-grid-tile>Grid Two</mat-grid-tile>
+                <mat-grid-tile>Grid Three</mat-grid-tile>
+                <mat-grid-tile>Grid Four</mat-grid-tile>
+                <mat-grid-tile>Grid Five</mat-grid-tile>
+                <mat-grid-tile>Grid Six</mat-grid-tile>
+                <mat-grid-tile>Grid Seven</mat-grid-tile>
+              </mat-grid-list>
             <div class="container">
                 <div class="row">
                     <div class="col-xl-6 col-md-6 mb-5">
@@ -96,5 +108,5 @@
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="!miFormulario.valid">Guardar</button>
         </form>
-    </div>
+    <!-- </div> -->
 </section>

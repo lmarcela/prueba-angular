@@ -1,8 +1,8 @@
-<section class="container">
-        <p>home works!</p>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" (click)="goToRegisterForm()">Ir a formulario de
+<section>
+        <h1>home works!</h1>
+        <p>Current Store Count: {{ count$ | async }}</p>
+        <button mat-flat-button class="mt" color="primary" (click)="goToPage('register')">Ir a formulario de
                 registro</button>
-        <button class="w-100 btn btn-lg btn-primary mt-2" type="submit" (click)="goToCounter()">Ir a Counter
+        <button mat-flat-button class="mt" color="accent" (click)="goToPage('home')">Ir a Counter
                 (Ngrx)</button>
-        <div>Current Count: {{ count$ | async }}</div>
 </section>

@@ -1,9 +1,21 @@
 body {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #f5f5f5;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+section {
+  padding: 30px;
+}
+
+.mt {
+  margin-top: 16px;
+}
+
+.ml {
+  margin-left: 16px;
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { goToCounter, goToRegisterForm } from 'src/app/utils/redirects';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +15,10 @@ export class HomeComponent {
   constructor(private router: Router, private store: Store<{ count: number }>) {
     this.count$ = store.select('count');
   }
-  goToRegisterForm() {
-    this.router.navigate(['/auth'], { queryParams: { token: '123' } });
-  }
-  goToCounter() {
-    this.router.navigate(['/counter']);
+
+  goToPage(page: string) {
+    page === 'register'
+      ? goToRegisterForm(this.router)
+      : goToCounter(this.router);
   }
 }

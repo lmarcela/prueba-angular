@@ -19,6 +19,7 @@ interface PaisesResponse {
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
+  breakpoint!: number;
   paisesError = false;
   ciudadesError = false;
   cargando = false;
@@ -47,8 +48,12 @@ export class RegistroComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private paisesService: PaisesService) {}
   ngOnInit(): void {
+    this.breakpoint = window.innerWidth <= 600 ? 1 : 2;
     this.loadPaises();
     this.loadCiudades();
+  }
+  handleSize(event: UIEvent | any) {
+    this.breakpoint = event.target.innerWidth <= 600 ? 1 : 2;
   }
   loadPaises() {
     this.paisesService

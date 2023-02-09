@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CounterComponent } from './component/counter.component';
+import { CounterComponent } from './pages/counter.component';
 
 const routes: Routes = [
   {
