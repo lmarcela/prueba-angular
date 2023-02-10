@@ -1,112 +1,112 @@
 <section>
-    <!-- <div class="form-signin w-100 m-auto"> -->
-        <form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="submitFormulario()">
-            <h1 class="text-center h3 mb-3 fw-normal">Formulario de registro</h1>
-            <!-- <Grid container columns={{ xs: 4, md: 12 }}>
-                <Grid item xs={2} />
-              </Grid> -->
-              <mat-grid-list [cols]="breakpoint" rowHeight="100px" (window:resize)="handleSize($event)">
-                <mat-grid-tile>Grid One</mat-grid-tile>
-                <mat-grid-tile>Grid Two</mat-grid-tile>
-                <mat-grid-tile>Grid Three</mat-grid-tile>
-                <mat-grid-tile>Grid Four</mat-grid-tile>
-                <mat-grid-tile>Grid Five</mat-grid-tile>
-                <mat-grid-tile>Grid Six</mat-grid-tile>
-                <mat-grid-tile>Grid Seven</mat-grid-tile>
-              </mat-grid-list>
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-md-6 mb-5">
-                        <p class="mb-3 fw-normal">Información del usuario</p>
-                        <div class="form-floating">
-                            <input type="text" class="form-control" formControlName="nombre" id="floatingNombre">
-                            <label for="floatingNombre">Nombre</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="text" class="form-control" formControlName="apellido" id="floatingApellido">
-                            <label for="floatingApellido">Apellido</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" class="form-control" formControlName="edad" id="floatingEdad">
-                            <label for="floatingEdad">Edad</label>
-                        </div>
-                        <button class="btn btn-light" type="button" disabled *ngIf="!paisesError && paises.length===0">
-                            <span class="spinner-grow spinner-grow-sm text-primary" role="status"
-                                aria-hidden="true"></span>
-                            Cargando países...
+    <form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="submitFormulario()">
+        <h1>Formulario de registro</h1>
+        <div class="content">
+            <div class="hw">
+                <p>Información del usuario</p>
+                <p>
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="nombre">
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Apellido</mat-label>
+                        <input matInput formControlName="apellido">
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Edad</mat-label>
+                        <input matInput type="number" formControlName="edad">
+                    </mat-form-field>
+                </p>
+                <div>
+                    <button mat-button disabled *ngIf="!paisesError && paises.length===0">
+                        <mat-icon>
+                            <mat-spinner diameter="18">
+                            </mat-spinner>
+                        </mat-icon>Cargando países...
+                    </button>
+                </div>
+                <p *ngIf="paisesError" class="color-warn">
+                    Error cargando paises. Intenta mas tarde.
+                </p>
+                <mat-form-field appearance="fill" *ngIf="paises.length>0" class="w-100">
+                    <mat-label>Pais</mat-label>
+                    <mat-select formControlName="pais">
+                        <mat-option *ngFor="let pais of paises" [value]="pais | lowercase">
+                            {{ pais }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div>
+                    <button mat-button disabled *ngIf="!ciudadesError && cargando && ciudades.length===0">
+                        <mat-icon>
+                            <mat-spinner diameter="18">
+                            </mat-spinner>
+                        </mat-icon>Cargando ciudades...
+                    </button>
+                </div>
+                <p *ngIf="ciudadesError" class="color-warn">
+                    Error cargando ciudades. Intenta mas tarde.
+                </p>
+                <mat-form-field appearance="fill" *ngIf="ciudades.length>0" class="w-100">
+                    <mat-label>Ciudad</mat-label>
+                    <mat-select formControlName="ciudad">
+                        <mat-option *ngFor="let ciudad of ciudades" [value]="ciudad | lowercase">
+                            {{ ciudad }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="hw">
+                <p>Personas a cargo</p>
+                <div formGroupName="nuevaPersona">
+                    <p>
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Nombre completo</mat-label>
+                            <input matInput formControlName="nombreCompleto">
+                        </mat-form-field>
+                    </p>
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Parentesco</mat-label>
+                        <mat-select formControlName="parentesco">
+                            <mat-option *ngFor="let parentesco of parentescos" [value]="parentesco | lowercase">
+                                {{ parentesco }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <p>
+                        <mat-form-field appearance="fill" class="w-100">
+                            <mat-label>Edad</mat-label>
+                            <input matInput type="number" formControlName="edad2">
+                        </mat-form-field>
+                    </p>
+                    <button mat-stroked-button color="primary" (click)="agregarPersona()" [disabled]="!validPersonas()"
+                        class="w-100">Agregar Persona a cargo</button>
+                </div>
+                <div *ngIf="personasArr.length > 0" class="mt" formArrayName="personas">
+                    <div *ngFor="let persona of personasArr.value; let i = index">
+                        <mat-form-field appearance="fill" class="w-80">
+                            <input matInput
+                                value="{{persona.parentesco}}: {{persona.nombreCompleto}} - {{persona.edad2}} años"
+                                readonly>
+                        </mat-form-field>
+                        <button mat-mini-fab color="warn" (click)="borrarPersona(i)">
+                            <mat-icon>delete</mat-icon>
                         </button>
-                        <div *ngIf="paisesError" class="text-danger">
-                            Error cargando paises. Intenta mas tarde.
-                        </div>
-                        <div class="form-floating" *ngIf="paises.length>0">
-                            <select class="form-control" formControlName="pais" id="floatingPais">
-                                <option value=""> -- Seleccione Pais -- </option>
-                                <option *ngFor="let pais of paises" [value]="pais | lowercase"> {{ pais }} </option>
-                            </select>
-                            <label for="floatingPais">Pais</label>
-                        </div>
-                        <button class="btn btn-light" type="button" disabled
-                            *ngIf="!ciudadesError && cargando && ciudades.length===0">
-                            <span class="spinner-grow spinner-grow-sm text-primary" role="status"
-                                aria-hidden="true"></span>
-                            Cargando ciudades...
-                        </button>
-                        <div *ngIf="ciudadesError" class="text-danger">
-                            Error cargando ciudades. Intenta mas tarde.
-                        </div>
-                        <div class="form-floating" *ngIf="ciudades.length>0">
-                            <select class="form-control" formControlName="ciudad" id="floatingCiudad">
-                                <option value=""> -- Seleccione Ciudad -- </option>
-                                <option *ngFor="let ciudad of ciudades" [value]="ciudad | lowercase"> {{ ciudad }}
-                                </option>
-                            </select>
-                            <label for="floatingCiudad">Ciudad</label>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-md-6">
-                        <p class="mb-3 fw-normal">Personas a cargo</p>
-                        <diV formGroupName="nuevaPersona">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" formControlName="nombreCompleto"
-                                    id="floatingNombreCompleto">
-                                <label for="floatingNombreCompleto">Nombre completo</label>
-                            </div>
-                            <div class="form-floating">
-                                <select class="form-control" formControlName="parentesco" id="floatingParentesco">
-                                    <option value=""> -- Seleccione Parentesco -- </option>
-                                    <option *ngFor="let parentesco of parentescos" [value]="parentesco | lowercase"> {{
-                                        parentesco }} </option>
-                                </select>
-                                <label for="floatingParentesco">Parentesco</label>
-                            </div>
-
-                            <div class="form-floating">
-                                <input type="number" class="form-control" formControlName="edad2" id="floatingEdad2">
-                                <label for="floatingEdad2">Edad</label>
-                            </div>
-                            <button class="btn btn-outline-primary w-100" type="button" (click)="agregarPersona()"
-                                [disabled]="!validPersonas()">
-                                Agregar Persona a cargo
-                            </button>
-                        </diV>
-                        <div *ngIf="personasArr.length > 0" class="mt-3 row">
-                            <div class="col-sm-12" formArrayName="personas">
-
-                                <div class="input-group mb-1" *ngFor="let persona of personasArr.value; let i = index">
-                                    <input class="form-control"
-                                        value="{{persona.parentesco}}: {{persona.nombreCompleto}} - {{persona.edad2}} años">
-
-                                    <button class="btn btn-outline-danger" type="button" (click)="borrarPersona(i)">
-                                        Eliminar
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
+
             </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="!miFormulario.valid">Guardar</button>
-        </form>
-    <!-- </div> -->
+
+        </div>
+
+
+
+        <button mat-flat-button class="mt w-100" color="primary" type="submit"
+            [disabled]="!miFormulario.valid">Guardar</button>
+    </form>
 </section>
