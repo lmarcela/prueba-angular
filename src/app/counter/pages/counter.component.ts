@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { goToHome } from 'src/app/utils/redirects';
 import { increment, decrement, reset } from '../counter.actions';
 
 @Component({
@@ -28,6 +29,6 @@ export class CounterComponent {
   }
 
   goToHome() {
-    this.router.navigate(['/']);
+    goToHome(this.router);
   }
 }
