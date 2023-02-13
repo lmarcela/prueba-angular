@@ -6,11 +6,13 @@ import {
   FormControl,
   FormArray,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, switchMap, tap } from 'rxjs';
 import { IUser } from 'src/app/models/User';
 import { PaisesService } from 'src/app/services/paises.service';
 import { UsersState } from 'src/app/state/users/users.state';
+import { goToHome } from 'src/app/utils/redirects';
 import { ADD_USER } from '../../../state/users/users.actions';
 
 interface PaisesResponse {
@@ -54,7 +56,8 @@ export class RegistroComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private paisesService: PaisesService,
-    private store: Store<UsersState>
+    private store: Store<UsersState>,
+    private router: Router
   ) {
     this.users$ = store.select('users');
   }
@@ -211,5 +214,9 @@ export class RegistroComponent implements OnInit {
         (x) => x.toLowerCase() !== parentesco
       );
     }
+  }
+
+  goToHome() {
+    goToHome(this.router);
   }
 }
