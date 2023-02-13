@@ -6,8 +6,12 @@ import {
   FormControl,
   FormArray,
 } from '@angular/forms';
-import { switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, switchMap, tap } from 'rxjs';
+import { IUser } from 'src/app/models/User';
 import { PaisesService } from 'src/app/services/paises.service';
+import { UsersState } from 'src/app/state/users/users.state';
+import { ADD_USER } from '../../../state/users/users.actions';
 
 interface PaisesResponse {
   country: string;
@@ -19,6 +23,7 @@ interface PaisesResponse {
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
+  users$: Observable<any>;
   breakpoint!: number;
   paisesError = false;
   ciudadesError = false;
@@ -46,7 +51,13 @@ export class RegistroComponent implements OnInit {
     return this.miFormulario.get('personas') as FormArray;
   }
 
-  constructor(private fb: FormBuilder, private paisesService: PaisesService) {}
+  constructor(
+    private fb: FormBuilder,
+    private paisesService: PaisesService,
+    private store: Store<UsersState>
+  ) {
+    this.users$ = store.select('users');
+  }
   ngOnInit(): void {
     this.breakpoint = window.innerWidth <= 600 ? 1 : 2;
     this.loadPaises();
@@ -165,7 +176,15 @@ export class RegistroComponent implements OnInit {
     console.log('pais:', pais);
     console.log('ciudad:', ciudad);
     console.log('personas a cargo:', this.miFormulario.get('personas')?.value);
-
+    const user: IUser = {
+      nombre: this.miFormulario.get('nombre')?.value,
+      apellido: this.miFormulario.get('apellido')?.value,
+      edad: this.miFormulario.get('edad')?.value || 18,
+      pais,
+      ciudad,
+      dependientes: this.miFormulario.get('personas')?.value,
+    };
+    this.store.dispatch(ADD_USER({ payload: user }));
     this.personasArr.clear();
     this.parentescos = ['Esposo(a)', 'Papá', 'Mamá', 'Hijo(a)', 'Otro'];
     this.miFormulario.reset({

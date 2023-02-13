@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home/home.component';
 import { PaisesInterceptor } from './interceptors/paises.interceptor';
 import { counterReducer } from './counter/counter.reducer';
 import { MaterialModule } from './utils/material.module';
+import { UsersReducer } from './state/users/users.reducer';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -18,11 +19,11 @@ import { MaterialModule } from './utils/material.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ count: counterReducer }),
+    StoreModule.forRoot({ count: counterReducer, users: UsersReducer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
-    MaterialModule
+    MaterialModule,
   ],
   providers: [
     {

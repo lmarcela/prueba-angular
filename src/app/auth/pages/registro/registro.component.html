@@ -109,4 +109,5 @@
         <button mat-flat-button class="mt w-100" color="primary" type="submit"
             [disabled]="!miFormulario.valid">Guardar</button>
     </form>
+    <p>Current Users: {{ users$ | async }}</p>
 </section>
